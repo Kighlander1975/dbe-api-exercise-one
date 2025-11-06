@@ -101,6 +101,55 @@ styles.css                    # Styling for the user interface
 - Clean, RESTful URL structure with multiple format options
 - Self-documenting API with help endpoint
 
+## REST Principles Analysis
+
+This API implements several key REST principles while leaving room for future improvements. Here's an analysis of how the API aligns with REST principles:
+
+### Implemented REST Principles
+
+1. **Client-Server Architecture** ✅
+   - Clear separation between client (frontend) and server (backend)
+   - Well-defined interfaces for communication
+
+2. **Statelessness** ✅
+   - Each request contains all necessary information
+   - No session state is stored on the server
+   - Requests can be processed independently
+   - Identical requests yield identical responses
+
+3. **Layered System** ✅
+   - API could be deployed behind proxies, gateways, or load balancers
+   - Client doesn't need to know if it's communicating directly with the end server
+
+4. **Uniform Interface (Partial)** ⚠️
+   - **Resource Identification**: Implemented through clean URLs
+   - **Resource Manipulation through Representations**: Implemented for read operations
+
+### Areas for REST Improvement
+
+1. **Cacheability** ❌
+   - No explicit cache control headers implemented
+   - Could add `Cache-Control`, `ETag`, or `Last-Modified` headers
+   - Support for conditional requests could be added
+
+2. **HATEOAS (Hypermedia as the Engine of Application State)** ❌
+   - API responses don't include links to related resources
+   - Clients can't "navigate" the API through provided links
+
+3. **Complete HTTP Method Usage** ❌
+   - Currently only uses GET method
+   - Could implement POST, PUT, DELETE for a complete RESTful API
+
+4. **Content Negotiation** ⚠️
+   - Format is specified in URL path rather than through Accept headers
+   - Could implement proper content negotiation using HTTP headers
+
+### REST Compliance Assessment
+
+The API is "REST-like" or "REST-inspired" rather than fully REST-compliant. It implements the core principles of statelessness and client-server architecture while using clean, resource-oriented URLs. For many applications, this level of REST compliance is sufficient and practical.
+
+Full REST compliance would require implementing HATEOAS, proper caching mechanisms, and more sophisticated content negotiation, which could be considered for future versions.
+
 ## Code Explanation
 
 - `flights.inc.php`: Contains the flight data array with routes, prices, and other details
@@ -226,7 +275,11 @@ The API is designed with a modular structure to allow for easy extension. Future
 - Booking functionality
 - Support for more departure cities
 - Additional output formats
-- Enhanced RESTful API features
+- Enhanced RESTful API features including:
+  - HATEOAS implementation
+  - Proper caching mechanisms
+  - Full HTTP method support
+  - Content negotiation via HTTP headers
 - API versioning and authentication
 
 ## Credits
