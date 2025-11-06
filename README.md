@@ -1,6 +1,22 @@
 # Flight Information API
 
-A simple PHP-based API that provides flight information based on departure city, destination city, and requested date/time in both JSON and plain text formats.
+## Changelog
+
+- **Version 1.2** (Current)
+  - Added user-friendly interface with autocomplete functionality
+  - Added CSS styling for the interface
+  - Updated documentation with complete examples and credits
+
+- **Version 1.1**
+  - Added plain text output format (flights-txt.php)
+  - Implemented proper UTF-8 support for special characters
+  - Enhanced error handling with descriptive messages
+
+- **Version 1.0**
+  - Initial release with JSON output (flights-json.php)
+  - Implemented flight search functionality
+  - Added support for multiple date/time formats
+  - Created flight alternatives generation
 
 ## Project Description
 
