@@ -1,0 +1,20 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Base rules for clean URLs
+RewriteRule ^flights$ index.php [L]
+RewriteRule ^flights/$ index.php [L]
+
+# API endpoints with format specification
+RewriteRule ^flights/json/?$ api/flights-json.php [QSA,L]
+RewriteRule ^flights/text/?$ api/flights-txt.php [QSA,L]
+
+# Handle specific flight routes with date in URL path
+# Format: /flights/json/Berlin/London/2025-11-15/14:30
+RewriteRule ^flights/(json|text)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$ api/$1-flights.php?start=$2&ziel=$3&date=$4&time=$5 [QSA,L]
+
+# Handle specific flight routes with date as query parameter
+RewriteRule ^flights/(json|text)/([^/]+)/([^/]+)/?$ api/flights-$1.php?start=$2&ziel=$3 [QSA,L]
+
+# Fallback for other /flights/ requests
+RewriteRule ^flights/(.*)$ index.php [QSA,L]

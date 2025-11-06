@@ -10,13 +10,35 @@ header('Content-Type: text/plain; charset=UTF-8');
 include "data/flights.inc.php";
 include "functions/flight_functions.php";
 
+// Check for clean URL parameters in the path
+$requestUri = $_SERVER['REQUEST_URI'];
+$pathParts = explode('/', trim(parse_url($requestUri, PHP_URL_PATH), '/'));
+
+// Try to extract start and ziel from clean URL structure
+// Format: /flights/text/[start]/[ziel]
+// or: /flights/text/[start]/[ziel]/[date]/[time]
 $start = isset($_GET['start']) ? $_GET['start'] : null;
 $ziel = isset($_GET['ziel']) ? $_GET['ziel'] : null;
-$datetime = isset($_GET['datetime']) ? $_GET['datetime'] : null;
+$date = isset($_GET['date']) ? $_GET['date'] : null;
+$time = isset($_GET['time']) ? $_GET['time'] : null;
+
+// If we have a clean URL structure, extract parameters from path
+if (count($pathParts) >= 4 && strtolower($pathParts[count($pathParts) - 4]) === 'flights' && 
+    strtolower($pathParts[count($pathParts) - 3]) === 'text') {
+    $start = urldecode($pathParts[count($pathParts) - 2]);
+    $ziel = urldecode($pathParts[count($pathParts) - 1]);
+}
+
+// If date and time are provided in the URL path
+if (isset($_GET['date']) && isset($_GET['time'])) {
+    $datetime = $date . ' ' . $time;
+} else {
+    $datetime = isset($_GET['datetime']) ? $_GET['datetime'] : null;
+}
 
 // check if parameters are set
 if ($start === null || $ziel === null || $datetime === null) {
-    echo "Fehler: Parameter 'start', 'ziel' und 'datetime' sind erforderlich.";
+    echo "Fehler: Parameter 'start', 'ziel' und 'datetime' (oder 'date'/'time') sind erforderlich.";
     exit;
 }
 

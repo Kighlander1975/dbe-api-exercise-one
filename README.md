@@ -2,7 +2,17 @@
 
 ## Changelog
 
-- **Version 1.2** (Current)
+- **Version 1.3.1** (Current)
+  - Added even cleaner URL format with date/time in path
+  - Updated interface to allow selection of URL format
+  - Enhanced documentation with new URL format examples
+
+- **Version 1.3**
+  - Added clean URL support via .htaccess
+  - Updated interface to use RESTful URL structure
+  - Enhanced documentation with new URL format examples
+
+- **Version 1.2**
   - Added user-friendly interface with autocomplete functionality
   - Added CSS styling for the interface
   - Updated documentation with complete examples and credits
@@ -34,27 +44,33 @@ api/
 └── flights-txt.php           # Plain text API endpoint
 index.php                     # User interface
 styles.css                    # Styling for the user interface
+.htaccess                     # URL rewriting rules
 ```
 
 ## API Endpoints
 
 ### 1. JSON Flight Information
 
-**Endpoint:** `/api/flights-json.php`
+**Legacy Endpoint:** `/api/flights-json.php`  
+**Clean URL Endpoint:** `/flights/json/[start]/[ziel]`  
+**Clean URL with Date:** `/flights/json/[start]/[ziel]/[date]/[time]`
 
 **Parameters:**
 - `start`: Departure city (e.g., "Berlin")
 - `ziel`: Destination city (e.g., "London")
 - `datetime`: Date and time in various formats (e.g., "15.11.2025 14:30" or "2025-11-15 14:30")
+- Alternatively: `date` and `time` as separate parameters (e.g., "2025-11-15" and "14:30")
 
 **Response Format:** JSON
 
 ### 2. Plain Text Flight Information
 
-**Endpoint:** `/api/flights-txt.php`
+**Legacy Endpoint:** `/api/flights-txt.php`  
+**Clean URL Endpoint:** `/flights/text/[start]/[ziel]`  
+**Clean URL with Date:** `/flights/text/[start]/[ziel]/[date]/[time]`
 
 **Parameters:**
-- Same parameters as JSON endpoint: `start`, `ziel`, `datetime`
+- Same parameters as JSON endpoint
 
 **Response Format:** Formatted plain text in German
 
@@ -67,6 +83,7 @@ styles.css                    # Styling for the user interface
 - Price variations for alternative flights
 - Multiple output formats (JSON and plain text)
 - User-friendly interface with autocomplete
+- Clean, RESTful URL structure with multiple format options
 
 ## Code Explanation
 
@@ -80,6 +97,7 @@ styles.css                    # Styling for the user interface
 - `flights-txt.php`: API endpoint that processes requests and returns formatted text responses
 - `index.php`: User interface with form and autocomplete functionality
 - `styles.css`: Styling for the user interface
+- `.htaccess`: URL rewriting rules for clean URLs
 
 ## Available Flights
 
@@ -101,81 +119,73 @@ Currently, only **Berlin** is available as a departure city. Additional flight r
 
 ## Test Links
 
-### JSON Format Examples
+### Clean URL Format Examples
 
-#### Valid Examples
+#### With Date/Time in Path (Most Readable)
 
 1. Berlin to London on November 15, 2025 at 2:30 PM:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025%2014:30" target="_blank">Berlin to London</a>  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/London/2025-11-15/14:30" target="_blank">Berlin to London (Date in Path)</a>  
+   `localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/London/2025-11-15/14:30`
+
+2. Berlin to Paris as text format:  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/text/Berlin/Paris/2025-12-20/08:15" target="_blank">Berlin to Paris (Text, Date in Path)</a>  
+   `localhost/DBE-exercises/dbe-api-exercises/flights/text/Berlin/Paris/2025-12-20/08:15`
+
+#### With Date/Time as Query Parameter
+
+1. Berlin to London on November 15, 2025 at 2:30 PM:  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/London?datetime=15.11.2025%2014:30" target="_blank">Berlin to London (Query Parameter)</a>  
+   `localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/London?datetime=15.11.2025 14:30`
+
+2. Berlin to Paris on December 20, 2025 at 8:15 AM (ISO format):  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/Paris?datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (Query Parameter, ISO format)</a>  
+   `localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/Paris?datetime=2025-12-20 08:15`
+
+3. Berlin to Rome as text format:  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/text/Berlin/Rom?datetime=01.01.2026%2010:45:00" target="_blank">Berlin to Rome (Text, Query Parameter)</a>  
+   `localhost/DBE-exercises/dbe-api-exercises/flights/text/Berlin/Rom?datetime=01.01.2026 10:45:00`
+
+4. Case-insensitive search for Berlin to Prague:  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/text/berlin/prag?datetime=10.03.2026%2009:30" target="_blank">Berlin to Prague (Text, case-insensitive)</a>  
+   `localhost/DBE-exercises/dbe-api-exercises/flights/text/berlin/prag?datetime=10.03.2026 09:30`
+
+### Legacy Format Examples (Still Supported)
+
+#### JSON Format
+
+1. Berlin to London on November 15, 2025 at 2:30 PM:  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025%2014:30" target="_blank">Berlin to London (Legacy)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025 14:30`
 
 2. Berlin to Paris on December 20, 2025 at 8:15 AM (ISO format):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Paris&datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (ISO format)</a>  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Paris&datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (Legacy, ISO format)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Paris&datetime=2025-12-20 08:15`
 
-3. Berlin to Rome on January 1, 2026 at 10:45 AM with seconds:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Rom&datetime=01.01.2026%2010:45:00" target="_blank">Berlin to Rome (with seconds)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Rom&datetime=01.01.2026 10:45:00`
-
-4. Berlin to Vienna on February 5, 2026 at 4:20 PM (with T-separator):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Wien&datetime=2026-02-05T16:20" target="_blank">Berlin to Vienna (T-separator)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Wien&datetime=2026-02-05T16:20`
-
-5. Case-insensitive search for Berlin to Prague:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=berlin&ziel=prag&datetime=10.03.2026%2009:30" target="_blank">Berlin to Prague (case-insensitive)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=berlin&ziel=prag&datetime=10.03.2026 09:30`
-
-#### Invalid Examples
-
-1. Missing parameter (no destination):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&datetime=15.11.2025%2014:30" target="_blank">Missing destination parameter</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&datetime=15.11.2025 14:30`
-
-2. Invalid date format (no time):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025" target="_blank">Invalid date format</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025`
-
-3. Non-existent flight route:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=NewYork&datetime=15.11.2025%2014:30" target="_blank">Non-existent route</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=NewYork&datetime=15.11.2025 14:30`
-
-### Plain Text Format Examples
-
-#### Valid Examples
+#### Text Format
 
 1. Berlin to London on November 15, 2025 at 2:30 PM:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=London&datetime=15.11.2025%2014:30" target="_blank">Berlin to London (Text)</a>  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=London&datetime=15.11.2025%2014:30" target="_blank">Berlin to London (Legacy, Text)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=London&datetime=15.11.2025 14:30`
 
 2. Berlin to Paris on December 20, 2025 at 8:15 AM (ISO format):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Paris&datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (Text, ISO format)</a>  
+   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Paris&datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (Legacy, Text, ISO format)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Paris&datetime=2025-12-20 08:15`
 
-3. Berlin to Rome on January 1, 2026 at 10:45 AM with seconds:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Rom&datetime=01.01.2026%2010:45:00" target="_blank">Berlin to Rome (Text, with seconds)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Rom&datetime=01.01.2026 10:45:00`
+## URL Structure Explanation
 
-4. Berlin to Vienna on February 5, 2026 at 4:20 PM (with T-separator):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Wien&datetime=2026-02-05T16:20" target="_blank">Berlin to Vienna (Text, T-separator)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Wien&datetime=2026-02-05T16:20`
+The system now supports three different URL formats:
 
-5. Case-insensitive search for Berlin to Prague:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=berlin&ziel=prag&datetime=10.03.2026%2009:30" target="_blank">Berlin to Prague (Text, case-insensitive)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=berlin&ziel=prag&datetime=10.03.2026 09:30`
+1. **Most Readable Format** (new in v1.3.1):  
+   `/flights/[format]/[start]/[ziel]/[date]/[time]`  
+   Example: `/flights/json/Berlin/London/2025-11-15/14:30`
 
-#### Invalid Examples
+2. **Clean URL with Query Parameter** (introduced in v1.3):  
+   `/flights/[format]/[start]/[ziel]?datetime=[date time]`  
+   Example: `/flights/json/Berlin/London?datetime=15.11.2025 14:30`
 
-1. Missing parameter (no destination):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&datetime=15.11.2025%2014:30" target="_blank">Missing destination parameter (Text)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&datetime=15.11.2025 14:30`
-
-2. Invalid date format (no time):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=London&datetime=15.11.2025" target="_blank">Invalid date format (Text)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=London&datetime=15.11.2025`
-
-3. Non-existent flight route:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=NewYork&datetime=15.11.2025%2014:30" target="_blank">Non-existent route (Text)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=NewYork&datetime=15.11.2025 14:30`
+3. **Legacy Format** (original):  
+   `/api/flights-[format].php?start=[start]&ziel=[ziel]&datetime=[date time]`  
+   Example: `/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025 14:30`
 
 ## User Interface
 
@@ -184,6 +194,7 @@ The project includes a user-friendly interface (`index.php`) that allows users t
 - Enter departure and destination cities with autocomplete suggestions
 - Select date and time for the flight
 - Choose between JSON and text output formats
+- Select preferred URL format (clean URL or clean URL with date in path)
 - Submit the search and view results in a new tab
 
 ## Future Development
@@ -193,6 +204,7 @@ The API is designed with a modular structure to allow for easy extension. Future
 - Booking functionality
 - Support for more departure cities
 - Additional output formats
+- Enhanced RESTful API features
 
 ## Credits
 

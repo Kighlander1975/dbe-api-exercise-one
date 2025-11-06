@@ -67,6 +67,18 @@ $citiesJson = json_encode($cities);
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>URL-Format:</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="urlFormat" value="clean" checked> Saubere URL
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="urlFormat" value="cleanWithDate"> Saubere URL mit Datum im Pfad
+                    </label>
+                </div>
+            </div>
+
             <button type="submit" class="btn">Flug suchen</button>
         </form>
 
@@ -150,14 +162,25 @@ $citiesJson = json_encode($cities);
         function submitForm() {
             const start = document.getElementById('start').value;
             const ziel = document.getElementById('ziel').value;
-            const datetime = document.getElementById('datetime').value.replace('T', ' ');
+            const datetimeInput = document.getElementById('datetime').value;
             const format = document.querySelector('input[name="format"]:checked').value;
+            const urlFormat = document.querySelector('input[name="urlFormat"]:checked').value;
             
-            // Determine which endpoint to use based on format selection
-            const endpoint = format === 'json' ? 'api/flights-json.php' : 'api/flights-txt.php';
+            // Parse the datetime value
+            const dateObj = new Date(datetimeInput);
+            const date = dateObj.toISOString().split('T')[0]; // YYYY-MM-DD
+            const time = dateObj.toTimeString().split(' ')[0].substring(0, 5); // HH:MM
             
-            // Build the URL
-            const url = `${endpoint}?start=${encodeURIComponent(start)}&ziel=${encodeURIComponent(ziel)}&datetime=${encodeURIComponent(datetime)}`;
+            let url;
+            
+            if (urlFormat === 'cleanWithDate') {
+                // Use clean URL with date in path: /flights/json/Berlin/London/2025-11-15/14:30
+                url = `flights/${format}/${encodeURIComponent(start)}/${encodeURIComponent(ziel)}/${date}/${time}`;
+            } else {
+                // Use clean URL with date as query parameter: /flights/json/Berlin/London?datetime=2025-11-15 14:30
+                const datetime = datetimeInput.replace('T', ' ');
+                url = `flights/${format}/${encodeURIComponent(start)}/${encodeURIComponent(ziel)}?datetime=${encodeURIComponent(datetime)}`;
+            }
             
             // Redirect to the API endpoint
             window.open(url, '_blank');
