@@ -5,6 +5,9 @@ RewriteEngine On
 RewriteRule ^flights$ index.php [L]
 RewriteRule ^flights/$ index.php [L]
 
+# Help endpoint
+RewriteRule ^flights/help/?$ api/flights-help.php [QSA,L]
+
 # API endpoints with format specification
 RewriteRule ^flights/json/?$ api/flights-json.php [QSA,L]
 RewriteRule ^flights/text/?$ api/flights-txt.php [QSA,L]

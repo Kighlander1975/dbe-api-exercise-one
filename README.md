@@ -2,7 +2,12 @@
 
 ## Changelog
 
-- **Version 1.3.1** (Current)
+- **Version 1.4.0** (Current)
+  - Added `/flights/help` endpoint for API self-documentation
+  - Support for multiple output formats (HTML, JSON, Text) for help information
+  - Added list of available cities to help endpoint
+
+- **Version 1.3.1**
   - Added even cleaner URL format with date/time in path
   - Updated interface to allow selection of URL format
   - Enhanced documentation with new URL format examples
@@ -41,7 +46,8 @@ api/
 ├── functions/
 │   └── flight_functions.php  # Shared functions for flight processing
 ├── flights-json.php          # JSON API endpoint
-└── flights-txt.php           # Plain text API endpoint
+├── flights-txt.php           # Plain text API endpoint
+└── flights-help.php          # API help documentation endpoint
 index.php                     # User interface
 styles.css                    # Styling for the user interface
 .htaccess                     # URL rewriting rules
@@ -74,6 +80,15 @@ styles.css                    # Styling for the user interface
 
 **Response Format:** Formatted plain text in German
 
+### 3. API Help Documentation
+
+**Endpoint:** `/flights/help`
+
+**Parameters:**
+- Optional: `format` - Output format (html, json, text)
+
+**Response Format:** HTML (default), JSON, or plain text
+
 ## Features
 
 - Case-insensitive city name matching
@@ -84,6 +99,7 @@ styles.css                    # Styling for the user interface
 - Multiple output formats (JSON and plain text)
 - User-friendly interface with autocomplete
 - Clean, RESTful URL structure with multiple format options
+- Self-documenting API with help endpoint
 
 ## Code Explanation
 
@@ -95,6 +111,7 @@ styles.css                    # Styling for the user interface
   - Response formatting
 - `flights-json.php`: API endpoint that processes requests and returns JSON responses
 - `flights-txt.php`: API endpoint that processes requests and returns formatted text responses
+- `flights-help.php`: API help documentation endpoint with multiple output formats
 - `index.php`: User interface with form and autocomplete functionality
 - `styles.css`: Styling for the user interface
 - `.htaccess`: URL rewriting rules for clean URLs
@@ -119,6 +136,17 @@ Currently, only **Berlin** is available as a departure city. Additional flight r
 
 ## Test Links
 
+### API Help
+
+- <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/help" target="_blank">API Help (HTML)</a>  
+  `localhost/DBE-exercises/dbe-api-exercises/flights/help`
+
+- <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/help?format=json" target="_blank">API Help (JSON)</a>  
+  `localhost/DBE-exercises/dbe-api-exercises/flights/help?format=json`
+
+- <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/help?format=text" target="_blank">API Help (Text)</a>  
+  `localhost/DBE-exercises/dbe-api-exercises/flights/help?format=text`
+
 ### Clean URL Format Examples
 
 #### With Date/Time in Path (Most Readable)
@@ -141,14 +169,6 @@ Currently, only **Berlin** is available as a departure city. Additional flight r
    <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/Paris?datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (Query Parameter, ISO format)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/flights/json/Berlin/Paris?datetime=2025-12-20 08:15`
 
-3. Berlin to Rome as text format:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/text/Berlin/Rom?datetime=01.01.2026%2010:45:00" target="_blank">Berlin to Rome (Text, Query Parameter)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/flights/text/Berlin/Rom?datetime=01.01.2026 10:45:00`
-
-4. Case-insensitive search for Berlin to Prague:  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/flights/text/berlin/prag?datetime=10.03.2026%2009:30" target="_blank">Berlin to Prague (Text, case-insensitive)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/flights/text/berlin/prag?datetime=10.03.2026 09:30`
-
 ### Legacy Format Examples (Still Supported)
 
 #### JSON Format
@@ -157,25 +177,17 @@ Currently, only **Berlin** is available as a departure city. Additional flight r
    <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025%2014:30" target="_blank">Berlin to London (Legacy)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=London&datetime=15.11.2025 14:30`
 
-2. Berlin to Paris on December 20, 2025 at 8:15 AM (ISO format):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Paris&datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (Legacy, ISO format)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-json.php?start=Berlin&ziel=Paris&datetime=2025-12-20 08:15`
-
 #### Text Format
 
 1. Berlin to London on November 15, 2025 at 2:30 PM:  
    <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=London&datetime=15.11.2025%2014:30" target="_blank">Berlin to London (Legacy, Text)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=London&datetime=15.11.2025 14:30`
 
-2. Berlin to Paris on December 20, 2025 at 8:15 AM (ISO format):  
-   <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Paris&datetime=2025-12-20%2008:15" target="_blank">Berlin to Paris (Legacy, Text, ISO format)</a>  
-   `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=Paris&datetime=2025-12-20 08:15`
-
 ## URL Structure Explanation
 
 The system now supports three different URL formats:
 
-1. **Most Readable Format** (new in v1.3.1):  
+1. **Most Readable Format** (introduced in v1.3.1):  
    `/flights/[format]/[start]/[ziel]/[date]/[time]`  
    Example: `/flights/json/Berlin/London/2025-11-15/14:30`
 
@@ -197,6 +209,16 @@ The project includes a user-friendly interface (`index.php`) that allows users t
 - Select preferred URL format (clean URL or clean URL with date in path)
 - Submit the search and view results in a new tab
 
+## Self-Documentation
+
+The API now includes a self-documentation feature via the `/flights/help` endpoint:
+
+- **HTML format** (default): Provides a user-friendly web interface with all API details
+- **JSON format**: Machine-readable API documentation for automated tools
+- **Text format**: Simple text documentation for command-line usage
+
+This makes the API more discoverable and easier to use for developers.
+
 ## Future Development
 
 The API is designed with a modular structure to allow for easy extension. Future planned features include:
@@ -205,6 +227,7 @@ The API is designed with a modular structure to allow for easy extension. Future
 - Support for more departure cities
 - Additional output formats
 - Enhanced RESTful API features
+- API versioning and authentication
 
 ## Credits
 
