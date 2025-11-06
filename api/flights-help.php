@@ -2,18 +2,33 @@
 // Set UTF-8 encoding for the script
 mb_internal_encoding('UTF-8');
 
-// Determine the requested format based on the Accept header
-$acceptHeader = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
-$format = 'html'; // Default format
+// Determine the requested format based on the query parameter or Accept header
+$format = isset($_GET['format']) ? strtolower($_GET['format']) : '';
 
-if (strpos($acceptHeader, 'application/json') !== false) {
-    $format = 'json';
-    header('Content-Type: application/json; charset=UTF-8');
-} elseif (strpos($acceptHeader, 'text/plain') !== false) {
-    $format = 'text';
-    header('Content-Type: text/plain; charset=UTF-8');
-} else {
-    header('Content-Type: text/html; charset=UTF-8');
+// If no format parameter, check Accept header
+if (empty($format)) {
+    $acceptHeader = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+    if (strpos($acceptHeader, 'application/json') !== false) {
+        $format = 'json';
+    } elseif (strpos($acceptHeader, 'text/plain') !== false) {
+        $format = 'text';
+    } else {
+        $format = 'html'; // Default format
+    }
+}
+
+// Set appropriate Content-Type header
+switch ($format) {
+    case 'json':
+        header('Content-Type: application/json; charset=UTF-8');
+        break;
+    case 'text':
+        header('Content-Type: text/plain; charset=UTF-8');
+        break;
+    default:
+        header('Content-Type: text/html; charset=UTF-8');
+        $format = 'html';
+        break;
 }
 
 // Base URL for examples
@@ -76,8 +91,10 @@ $endpoints = [
         'path' => '/flights/help',
         'method' => 'GET',
         'description' => 'Get API help information in various formats',
-        'parameters' => [],
-        'example' => "$baseUrl/help"
+        'parameters' => [
+            'format' => 'Optional: Output format (html, json, text)'
+        ],
+        'example' => "$baseUrl/help?format=json"
     ]
 ];
 
@@ -306,8 +323,8 @@ switch ($format) {
     
     <div class="formats">
         <strong>View this help in other formats:</strong>
-        <a href="?format=json" target="_blank">JSON</a>
-        <a href="?format=text" target="_blank">Plain Text</a>
+        <a href="<?php echo $baseUrl; ?>/help?format=json" target="_blank">JSON</a>
+        <a href="<?php echo $baseUrl; ?>/help?format=text" target="_blank">Plain Text</a>
     </div>
 </body>
 </html>
