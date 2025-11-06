@@ -2,6 +2,10 @@
 
 A simple PHP-based API that provides flight information based on departure city, destination city, and requested date/time in both JSON and plain text formats.
 
+## Project Description
+
+This project was developed as part of the [DBE Academy](https://www.dbe.academy/) API development exercises. It demonstrates the implementation of a RESTful API with multiple output formats and a user-friendly frontend.
+
 ## Project Structure
 
 ```
@@ -12,6 +16,8 @@ api/
 │   └── flight_functions.php  # Shared functions for flight processing
 ├── flights-json.php          # JSON API endpoint
 └── flights-txt.php           # Plain text API endpoint
+index.php                     # User interface
+styles.css                    # Styling for the user interface
 ```
 
 ## API Endpoints
@@ -44,6 +50,7 @@ api/
 - Dynamic flight time calculation based on number of stops
 - Price variations for alternative flights
 - Multiple output formats (JSON and plain text)
+- User-friendly interface with autocomplete
 
 ## Code Explanation
 
@@ -55,6 +62,8 @@ api/
   - Response formatting
 - `flights-json.php`: API endpoint that processes requests and returns JSON responses
 - `flights-txt.php`: API endpoint that processes requests and returns formatted text responses
+- `index.php`: User interface with form and autocomplete functionality
+- `styles.css`: Styling for the user interface
 
 ## Available Flights
 
@@ -152,6 +161,15 @@ Currently, only **Berlin** is available as a departure city. Additional flight r
    <a href="http://localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=NewYork&datetime=15.11.2025%2014:30" target="_blank">Non-existent route (Text)</a>  
    `localhost/DBE-exercises/dbe-api-exercises/api/flights-txt.php?start=Berlin&ziel=NewYork&datetime=15.11.2025 14:30`
 
+## User Interface
+
+The project includes a user-friendly interface (`index.php`) that allows users to:
+
+- Enter departure and destination cities with autocomplete suggestions
+- Select date and time for the flight
+- Choose between JSON and text output formats
+- Submit the search and view results in a new tab
+
 ## Future Development
 
 The API is designed with a modular structure to allow for easy extension. Future planned features include:
@@ -159,3 +177,9 @@ The API is designed with a modular structure to allow for easy extension. Future
 - Booking functionality
 - Support for more departure cities
 - Additional output formats
+
+## Credits
+
+- Exercise developed as part of the [DBE Academy](https://www.dbe.academy/) curriculum
+- Implementation by [Kai Akkermann](https://kighlander.de/)
+- Project documentation: [GitHub Repository](https://github.com/Kighlander1975/dbe-api-exercise-one)
